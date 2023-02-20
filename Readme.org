@@ -1,0 +1,71 @@
+#+title: Readme
+#+author: Takanashi Davi
+
+* Introduction
+
+Subr (SUBtitle Renamer) is a simple perl script that can rename subtitle files to match the name of the corresponding video files in a given directory.
+
+This is useful for video players that can automatically make available subtitle files that have a name matching that of the video file, without having the need to edit the file names manually.
+
+* Usage
+
+Subr should be run from the directory where the video and subtitle files are located in.
+
+Subr will fetch the names of all video and subtitle files in that directory, check if the number of video files and subtitle files match, and rename the subtitles one by one to match the video files in order.
+
+** Excluding video files
+
+In the event that there are extra video files that do not have correesponding subtitle files, and thus should be excluded from the selection, you can pass the index of the files that should be exluded as arguments:
+#+BEGIN_SRC sh
+subr 4 5
+#+END_SRC
+In this example, the video files for the indexes 4 and 5 will be excluded from the selection, and only videos files 1 through 3 will be considered (if there were any files after 5, they would be considered as well).
+
+To find the indexes of the files that should be excluded, simply run the script without passing any arguments. This should return an error, seen as the number of video files will differ from those of the subtitle files, however, the video files found will still be listed, along with the index for each of them.
+
+** Example
+
+How it was at the beggining:
+[[./Images/Before.png]]
+
+First, we go to the folder in which the files are located and execute the command:
+[[./Images/CommandFail.png]]
+
+In this case, it failed, seen as there are two bonus files that do not have subtitle files to match them. In this output however, we found that these files are matched to index 4 and 5, so we will exlude them:
+[[./Images/CommandSuccess.png]]
+
+Now, the extra files were excluded, and the subtitle files were matched to the correspoding video files. Here is the final result:
+[[./Images/After.png]]
+
+* Installation
+** Linux
+To install on Linux, download the "subr.pl" file, and make it executable:
+#+BEGIN_SRC sh
+chmod +x subr.pl
+#+END_SRC
+The script can already be run, however, it can only be run by specifying its path. To be able to run it using "subr" on the command line, rename it to "subr"(without the .pl extension), then move, copy, or link it to a directory on the system's path (e.g.: /usr/bin). It may be necessary to reopen the terminal emulator after this.
+** Windows
+*** Pre-packaged Executable
+To use the provided executable, download "subr.exe" file, and move it to your preferred location, this can be C:\Program Files\subr or any other location of your choosing. To be able to run this script using "subr" on the command line, you must add the folder that you chose to the system's path. To do that:
+
+- Search for "path" on the start menu, select the following suggestion:
+[[./Images/WindowsSearch.png]]
+- Select "Environment Variables"
+[[./Images/SystemProperties.png]]
+- Select "Path" and click "Edit"
+[[./Images/EnvironmentVariables.png]]
+- Add the folder you put the executable file in and click "Ok" to save.
+After doing that, it may be necessary to reopen the command prompt.
+
+*** Packaging from Source
+- Download [[https://www.perl.org/get.html][Perl]]
+- Download PAR::Packer
+#+BEGIN_SRC sh
+cpan PAR::Packer
+#+END_SRC
+- Download "subr.pl"
+- Package "subr.pl" and its dependencies to "subr.exe"
+#+BEGIN_SRC sh
+pp -o subr.exe subr.pl
+#+END_SRC
+- Follow the instructions for the pre-packaged executable to be able to run it from the command line using "subr".
